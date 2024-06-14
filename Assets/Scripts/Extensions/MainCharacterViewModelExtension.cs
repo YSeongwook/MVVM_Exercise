@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-
 namespace ViewModel.Extensions
 {
     public static class MainCharacterViewModelExtension
@@ -22,11 +18,13 @@ namespace ViewModel.Extensions
         public static void RegisterEventsOnEnable(this MainCharacterProfileViewModel vm)
         {
             GameLogicManager.Inst.RegisterLevelUpCallback(vm.OnResponseLevelUp);
+            GameLogicManager.Inst.RegisterChangeNameCallback(vm.OnResponseChangeName);
         }
 
         public static void UnRegisterOnDisable(this MainCharacterProfileViewModel vm)
         {
             GameLogicManager.Inst.UnRegisterLevelUpCallback(vm.OnResponseLevelUp);
+            GameLogicManager.Inst.UnRegisterChangeNameCallback(vm.OnResponseChangeName);
         }
 
         public static void OnResponseLevelUp(this MainCharacterProfileViewModel vm, int userId, int level)
@@ -35,6 +33,14 @@ namespace ViewModel.Extensions
                 return;
 
             vm.Level = level;
+        }
+        
+        public static void OnResponseChangeName(this MainCharacterProfileViewModel vm, int userId, string name)
+        {
+            if (vm.UserId != userId)
+                return;
+
+            vm.Name = name;
         }
     }
 }

@@ -1,31 +1,33 @@
 using System.ComponentModel;
 using UnityEngine;
 using UnityEngine.UI;
+using ViewModel;
 using ViewModel.Extensions;
 
-public class SubProfileView : MonoBehaviour
+public class TopLeftUIView : MonoBehaviour
 {
     [SerializeField] Text Text_Name;
     [SerializeField] Text Text_Level;
+    [SerializeField] Image Image_Icon;
 
-    private SubProfileViewModel _vm;
+    private TopLeftViewModel _vm;
 
     private void OnEnable()
     {
-        if(_vm == null)
+        if (_vm == null)
         {
-            _vm = new SubProfileViewModel();
+            _vm = new TopLeftViewModel();
             _vm.PropertyChanged += OnPropertyChanged;
-            _vm.RegisterEventsOnEnable();
+            _vm.RegisterEventOnEnable();
             _vm.RefreshViewModel();
         }
     }
 
     private void OnDisable()
     {
-        if(_vm != null)
+        if (_vm != null)
         {
-            _vm.UnRegisterOnDisable();
+            _vm.UnRegisterEventOnDisable();
             _vm.PropertyChanged -= OnPropertyChanged;
             _vm = null;
         }
@@ -36,10 +38,12 @@ public class SubProfileView : MonoBehaviour
         switch (e.PropertyName)
         {
             case nameof(_vm.Name):
-                Text_Name.text = $"이름 : {_vm.Name}";
+                Text_Name.text = _vm.Name;
                 break;
             case nameof(_vm.Level):
-                Text_Level.text = $"레벨 : {_vm.Level}";
+                Text_Level.text = $"Lv.{_vm.Level}";
+                break;
+            case nameof(_vm.IconName):
                 break;
         }
     }
